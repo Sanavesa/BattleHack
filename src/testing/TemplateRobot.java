@@ -26,7 +26,7 @@ public class TemplateRobot extends AbstractRobot
 		
 		// Possible commands:
 //		return new MoveCommand((Voyager)unit, MoveDirection.North);
-//		return new BuildCommand((Planet)unit, BuildDirection.East);
+//		return new BuildCommand((Planet)unit, BuildDirection.East);		
 		
 		return null; // Means no command
 	}

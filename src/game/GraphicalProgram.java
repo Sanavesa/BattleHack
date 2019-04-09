@@ -21,10 +21,18 @@ import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import testing.ConvolvingRobot;
+import testing.DannysTestRob;
 import testing.RandomRobot;
 
 public class GraphicalProgram extends Application
 {
+	AbstractRobot redBot;
+	AbstractRobot blueBot;
+	Random random = new Random();
+	int size = 30 + random.nextInt(11); // 30-40
+
+	Game game = new Game(new RandomRobot(), new ConvolvingRobot(), size, Orientation.Horizontal);
+	
 	public static void main(String[] args)
 	{
 		launch(args);
@@ -33,11 +41,9 @@ public class GraphicalProgram extends Application
 	@Override
 	public void start(Stage stage) throws Exception
 	{
-		Random random = new Random();
-		int size = 30 + random.nextInt(11); // 30-40
+
 		
 		// TODO: CHANGE ME HERE DANIEL! Change RandomRobot below to your own implementation to test!
-		Game game = new Game(new RandomRobot(), new ConvolvingRobot(), size, Orientation.Horizontal);
 		
 		Tile[][] tiles = new Tile[game.getMapSize()][game.getMapSize()];
 		GridPane gridPane = new GridPane();
@@ -64,6 +70,100 @@ public class GraphicalProgram extends Application
 		Label lblRound = new Label("Round 1 / 256");
 		Label lblRedOrbs = new Label("Red Orbs: 0");
 		Label lblBlueOrbs = new Label("Blue Orbs: 0");
+		
+		Label lblRedBots = new Label("RED Team");
+		lblRedBots.setStyle("-fx-font-size: 16");
+		
+		
+		Button btnRConvolvingBot = new Button("Convolving");
+		btnRConvolvingBot.setStyle("-fx-background-color: 'lightgrey'; -fx-text-fill: 'black'"); 
+
+		
+		Button btnRDannysTestBot = new Button("SkyNet");
+		btnRDannysTestBot.setStyle("-fx-background-color: 'lightgrey'; -fx-text-fill: 'black'"); 
+
+		
+		Button btnRRandomBot = new Button("Random");
+		btnRRandomBot.setStyle("-fx-background-color: 'darkRed'; -fx-text-fill: 'white'");
+		redBot = new RandomRobot();
+		
+		
+		
+
+		btnRRandomBot.setOnAction(e ->
+		{
+			btnRRandomBot.setStyle("-fx-background-color: 'darkRed'; -fx-text-fill: 'white'"); 
+			btnRConvolvingBot.setStyle("-fx-background-color: 'lightgrey'; -fx-text-fill: 'black'"); 
+			btnRDannysTestBot.setStyle("-fx-background-color: 'lightgrey'; -fx-text-fill: 'black'"); 
+			game.setRedRobot(new RandomRobot());
+
+		});
+		
+		btnRConvolvingBot.setOnAction(e ->
+		{
+			btnRRandomBot.setStyle("-fx-background-color: 'lightgrey'; -fx-text-fill: 'black'"); 
+			btnRConvolvingBot.setStyle("-fx-background-color: 'darkRed'; -fx-text-fill: 'white'"); 
+			btnRDannysTestBot.setStyle("-fx-background-color: 'lightgrey'; -fx-text-fill: 'black'"); 
+			game.setRedRobot(new ConvolvingRobot());
+
+		});
+		
+		btnRDannysTestBot.setOnAction(e ->
+		{
+			btnRRandomBot.setStyle("-fx-background-color: 'lightgrey'; -fx-text-fill: 'black'"); 
+			btnRConvolvingBot.setStyle("-fx-background-color: 'lightgrey'; -fx-text-fill: 'black'"); 
+			btnRDannysTestBot.setStyle("-fx-background-color: 'darkRed'; -fx-text-fill: 'white'"); 
+			game.setRedRobot(new DannysTestRob());
+
+
+		});
+		
+
+		Label lblBlueBots = new Label("BLUE Team");
+		lblBlueBots.setStyle("-fx-font-size: 16");
+		
+
+		Button btnBConvolvingBot = new Button("Convolving");
+		btnBConvolvingBot.setStyle("-fx-background-color: 'darkblue'; -fx-text-fill: 'white'"); 
+		blueBot = new ConvolvingRobot();
+		
+
+		Button btnBDannysTestBot = new Button("SkyNet");
+		btnBDannysTestBot.setStyle("-fx-background-color: 'lightgrey'; -fx-text-fill: 'black'"); 
+
+		Button btnBRandomBot = new Button("Random");
+		btnBRandomBot.setStyle("-fx-background-color: 'lightgrey'; -fx-text-fill: 'black'"); 
+
+		
+		btnBConvolvingBot.setOnAction(e ->
+		{
+			btnBRandomBot.setStyle("-fx-background-color: 'lightgrey'; -fx-text-fill: 'black'"); 
+			btnBConvolvingBot.setStyle("-fx-background-color: 'darkblue'; -fx-text-fill: 'white'"); 
+			btnBDannysTestBot.setStyle("-fx-background-color: 'lightgrey'; -fx-text-fill: 'black'"); 
+		
+			game.setBlueRobot(new ConvolvingRobot());
+
+		});
+		
+		btnBDannysTestBot.setOnAction(e ->
+		{
+			btnBRandomBot.setStyle("-fx-background-color: 'lightgrey'; -fx-text-fill: 'black'"); 
+			btnBConvolvingBot.setStyle("-fx-background-color: 'lightgrey'; -fx-text-fill: 'black'"); 
+			btnBDannysTestBot.setStyle("-fx-background-color: 'darkblue'; -fx-text-fill: 'white'"); 
+		
+			game.setBlueRobot(new DannysTestRob());
+
+		});
+		
+		btnBRandomBot.setOnAction(e ->
+		{
+			btnBRandomBot.setStyle("-fx-background-color: 'darkblue'; -fx-text-fill: 'white'"); 
+			btnBConvolvingBot.setStyle("-fx-background-color: 'lightgrey'; -fx-text-fill: 'black'"); 
+			btnBDannysTestBot.setStyle("-fx-background-color: 'lightgrey'; -fx-text-fill: 'black'"); 
+	
+			game.setBlueRobot(new RandomRobot());
+
+		});
 		
 		Runnable onRestart = () ->
 		{
@@ -158,8 +258,27 @@ public class GraphicalProgram extends Application
 		Runnable updateGUI = () ->
 		{
 			lblRound.setText("Round " + game.getRoundCounter() + " / " + Game.getMaxRounds());
-			lblRedOrbs.setText("Red Orbs: " + game.getRedPlanet().getOrbCount() + ". Total collected = " + game.getRedPlanet().getTotalOrbsCollected());
-			lblBlueOrbs.setText("Blue Orbs: " + game.getBluePlanet().getOrbCount() + ". Total collected = " + game.getBluePlanet().getTotalOrbsCollected());
+			lblRedOrbs.setText("Red Orbs: " + game.getRedPlanet().getOrbCount() + ".\n Total collected = " + game.getRedPlanet().getTotalOrbsCollected());
+			lblBlueOrbs.setText("Blue Orbs: " + game.getBluePlanet().getOrbCount() + ".\n Total collected = " + game.getBluePlanet().getTotalOrbsCollected());
+			
+			if(game.getRedPlanet().getTotalOrbsCollected() > game.getBluePlanet().getTotalOrbsCollected())
+			{
+				lblRedOrbs.setTextFill(Color.GREEN);
+				lblBlueOrbs.setTextFill(Color.RED);
+			}
+			
+			else if(game.getRedPlanet().getTotalOrbsCollected() < game.getBluePlanet().getTotalOrbsCollected())
+			{
+				lblRedOrbs.setTextFill(Color.RED);
+				lblBlueOrbs.setTextFill(Color.GREEN);
+			}
+			
+			else
+			{
+				lblRedOrbs.setTextFill(Color.BLACK);
+				lblBlueOrbs.setTextFill(Color.BLACK);
+			}
+			
 			
 			for(int r = 0; r < game.getMapSize(); r++)
 			{
@@ -219,6 +338,7 @@ public class GraphicalProgram extends Application
 		Button btnPlayMatch = new Button("Play Match");
 		btnPlayMatch.setOnAction(e ->
 		{
+
 			Timeline timeline = new Timeline();
 			timeline.setCycleCount(Timeline.INDEFINITE);
 			timeline.getKeyFrames().add(new KeyFrame(Duration.seconds(0.2), e2 ->
@@ -229,6 +349,14 @@ public class GraphicalProgram extends Application
 					btnPlayMatch.setDisable(false);
 					btnNextRound.setDisable(false);
 					btnRestart.setDisable(false);
+					
+					btnRRandomBot.setDisable(false);
+					btnRConvolvingBot.setDisable(false);
+					btnRDannysTestBot.setDisable(false);
+
+					btnBRandomBot.setDisable(false);
+					btnBConvolvingBot.setDisable(false);
+					btnBDannysTestBot.setDisable(false);
 				}
 				else
 				{
@@ -237,6 +365,14 @@ public class GraphicalProgram extends Application
 					btnPlayMatch.setDisable(true);
 					btnNextRound.setDisable(true);
 					btnRestart.setDisable(true);
+					
+					btnRRandomBot.setDisable(true);
+					btnRConvolvingBot.setDisable(true);
+					btnRDannysTestBot.setDisable(true);
+
+					btnBRandomBot.setDisable(true);
+					btnBConvolvingBot.setDisable(true);
+					btnBDannysTestBot.setDisable(true);
 				}
 			}));
 			timeline.play();
@@ -273,7 +409,7 @@ public class GraphicalProgram extends Application
 		
 		updateGUI.run();
 		
-		VBox vbox = new VBox(lblRound, btnNextRound, btnPlayMatch, btnRestart, lblRedOrbs, lblBlueOrbs, btnHeatmap);
+		VBox vbox = new VBox(lblRound, btnNextRound, btnPlayMatch, btnRestart, lblRedOrbs, lblBlueOrbs, btnHeatmap, new Label(" \n\n"),lblRedBots,btnRConvolvingBot,btnRDannysTestBot,btnRRandomBot,lblBlueBots,btnBConvolvingBot,btnBDannysTestBot,btnBRandomBot);
 		
 		borderPane.setRight(vbox);
 		

@@ -175,6 +175,16 @@ public class Game
 		}
 	}
 	
+	public void setRedRobot(AbstractRobot x)
+	{
+		this.redRobot = x;
+	}
+	
+	public void setBlueRobot(AbstractRobot x)
+	{
+		this.blueRobot = x;
+	}
+	
 	public int getOrbValueAt(int row, int col)
 	{
 		return orbMap[row][col];
@@ -417,7 +427,7 @@ public class Game
 	private final Orientation symmetryOrientation;
 	private Planet redPlanet;
 	private Planet bluePlanet;
-	private final AbstractRobot redRobot;
-	private final AbstractRobot blueRobot;
+	private AbstractRobot redRobot;
+	private AbstractRobot blueRobot;
 	public static final int MAX_ROUNDS = 256;
 }
