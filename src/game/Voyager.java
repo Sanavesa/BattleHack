@@ -25,14 +25,14 @@ public class Voyager extends Unit
 		
 		for(Unit unit : getGame().getUnits())
 		{
-			// I dont care about enemy team
-			if(unit.getUnitTeam() != getUnitTeam())
+			if(unit.equals(this))
 				continue;
 			
 			if(unit.getUnitType() == UnitType.Planet)
 				continue;
 			
-			if(unit.equals(this))
+			// I dont care about enemy team
+			if(unit.getUnitTeam() != getUnitTeam())
 				continue;
 			
 //			if(Game.manhattanDistanceSqrd(moveRow, moveCol, unit.getRow(), unit.getCol()) <= 4)
