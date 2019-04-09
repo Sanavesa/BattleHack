@@ -13,8 +13,8 @@ public class Planet extends Unit
 			return false;
 		
 		// Can only build in adjacent, empty, and passable tiles
-		int buildRow = getRow() + direction.getDeltaRow();
-		int buildCol = getCol() + direction.getDeltaCol();
+		int buildRow = getRow(this) + direction.getDeltaRow();
+		int buildCol = getCol(this) + direction.getDeltaCol();
 		
 		if(buildRow < 0 || buildCol < 0 || buildRow >= getGame().getMapSize() || buildCol >= getGame().getMapSize())
 			return false;
@@ -29,10 +29,10 @@ public class Planet extends Unit
 	{
 		if(canBuildVoyager(direction))
 		{
-			int buildRow = getRow() + direction.getDeltaRow();
-			int buildCol = getCol() + direction.getDeltaCol();
+			int buildRow = getRow(this) + direction.getDeltaRow();
+			int buildCol = getCol(this) + direction.getDeltaCol();
 			
-			Voyager voyager = new Voyager(getGame(), getUnitTeam(), buildRow, buildCol);
+			Voyager voyager = new Voyager(getGame(), getUnitTeam(this), buildRow, buildCol);
 			getGame().addUnit(voyager);
 			
 			orbCount -= Planet.BUILD_COST;

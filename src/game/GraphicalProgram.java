@@ -208,7 +208,7 @@ public class GraphicalProgram extends Application
 						if(unit.getUnitType() == UnitType.Planet)
 							continue;
 						
-						int distance = Game.manhattanDistance(r, c, unit.getRow(), unit.getCol());
+						int distance = Game.manhattanDistance(r, c, unit.getRow(unit), unit.getCol(unit));
 						if(distance < closestDistance)
 						{
 							closestDistance = distance;
@@ -224,11 +224,11 @@ public class GraphicalProgram extends Application
 					if(closestUnits.size() == 0)
 						continue;
 					
-					UnitTeam closestTeam = closestUnits.get(0).getUnitTeam();
+					UnitTeam closestTeam = closestUnits.get(0).getUnitTeam(closestUnits.get(0));
 					boolean allSameTeam = true;
 					for(int i = 1; i < closestUnits.size(); i++)
 					{
-						if(closestTeam != closestUnits.get(i).getUnitTeam())
+						if(closestTeam != closestUnits.get(i).getUnitTeam(closestUnits.get(i)))
 						{
 							allSameTeam = false;
 							break;
@@ -302,7 +302,7 @@ public class GraphicalProgram extends Application
 							tile.getCircle().setRadius(4);
 						}
 						
-						if(unit.getUnitTeam() == UnitTeam.Red)
+						if(unit.getUnitTeam(unit) == UnitTeam.Red)
 						{
 							tile.getCircle().setFill(Color.RED);
 						}

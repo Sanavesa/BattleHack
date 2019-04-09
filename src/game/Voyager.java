@@ -9,8 +9,8 @@ public class Voyager extends Unit
 
 	public boolean canMove(MoveDirection direction)
 	{
-		int moveRow = getRow() + direction.getDeltaRow();
-		int moveCol = getCol() + direction.getDeltaCol();
+		int moveRow = getRow(this) + direction.getDeltaRow();
+		int moveCol = getCol(this) + direction.getDeltaCol();
 		
 		if(moveRow < 0 || moveCol < 0 || moveRow >= getGame().getMapSize() || moveCol >= getGame().getMapSize())
 			return false;
@@ -25,18 +25,18 @@ public class Voyager extends Unit
 		
 		for(Unit unit : getGame().getUnits())
 		{
-			// I dont care about enemy team
-			if(unit.getUnitTeam() != getUnitTeam())
+			if(unit.equals(this))
 				continue;
 			
 			if(unit.getUnitType() == UnitType.Planet)
 				continue;
 			
-			if(unit.equals(this))
+			// I dont care about enemy team / invisible units
+			UnitTeam otherTeam = unit.getUnitTeam(this);
+			if(otherTeam != getUnitTeam(this) || otherTeam == UnitTeam.None)
 				continue;
 			
-//			if(Game.manhattanDistanceSqrd(moveRow, moveCol, unit.getRow(), unit.getCol()) <= 4)
-			if(Math.abs(moveRow - unit.getRow()) > 1 || Math.abs(moveCol - unit.getCol()) > 1)
+			if(Math.abs(moveRow - unit.getRow(this)) > 1 || Math.abs(moveCol - unit.getCol(this)) > 1)
 			{
 				canMove = false;
 				break;
@@ -50,8 +50,8 @@ public class Voyager extends Unit
 	{
 		if(canMove(direction))
 		{
-			int moveRow = getRow() + direction.getDeltaRow();
-			int moveCol = getCol() + direction.getDeltaCol();
+			int moveRow = getRow(this) + direction.getDeltaRow();
+			int moveCol = getCol(this) + direction.getDeltaCol();
 			setRow(moveRow);
 			setCol(moveCol);
 		}

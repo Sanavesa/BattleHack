@@ -28,7 +28,6 @@ public class Game
 		for(int round = 0; round < Game.MAX_ROUNDS; round++)
 		{
 			playRound();
-			displayUnits();
 		}
 	}
 	
@@ -64,15 +63,15 @@ public class Game
 		roundCounter++;
 		
 		// Reset signals
-		for(Unit unit : units)
-		{
-			unit.setSignal(0);
-		}
+//		for(Unit unit : units)
+//		{
+//			unit.setSignal(0);
+//		}
 		
 		// Play turn in order 
 		for(Unit unit : units)
 		{
-			if(unit.getUnitTeam() == UnitTeam.Red)
+			if(unit.getUnitTeam(unit) == UnitTeam.Red)
 			{
 				Command command = redRobot.playTurn(this, unit);
 				if(command != null)
@@ -88,6 +87,12 @@ public class Game
 					command.execute();
 				}
 			}
+			
+			if(!unit.signalChanged)
+			{
+				unit.setSignal(0);
+				unit.signalChanged = false;
+			}
 		}
 		
 		// Process added units
@@ -100,13 +105,19 @@ public class Game
 			
 			for(Unit unit : temp)
 			{
-				if(unit.getUnitTeam() == UnitTeam.Red)
+				if(unit.getUnitTeam(unit) == UnitTeam.Red)
 				{
 					redRobot.playTurn(this, unit);
 				}
 				else
 				{
 					blueRobot.playTurn(this, unit);
+				}
+				
+				if(!unit.signalChanged)
+				{
+					unit.setSignal(0);
+					unit.signalChanged = false;
 				}
 			}
 		}
@@ -133,7 +144,7 @@ public class Game
 					if(unit.getUnitType() == UnitType.Planet)
 						continue;
 					
-					int distance = manhattanDistance(r, c, unit.getRow(), unit.getCol());
+					int distance = manhattanDistance(r, c, unit.getRow(unit), unit.getCol(unit));
 					if(distance < closestDistance)
 					{
 						closestDistance = distance;
@@ -149,11 +160,11 @@ public class Game
 				if(closestUnits.size() == 0)
 					continue;
 				
-				UnitTeam closestTeam = closestUnits.get(0).getUnitTeam();
+				UnitTeam closestTeam = closestUnits.get(0).getUnitTeam(closestUnits.get(0));
 				boolean allSameTeam = true;
 				for(int i = 1; i < closestUnits.size(); i++)
 				{
-					if(closestTeam != closestUnits.get(i).getUnitTeam())
+					if(closestTeam != closestUnits.get(i).getUnitTeam(closestUnits.get(i)))
 					{
 						allSameTeam = false;
 						break;
@@ -241,7 +252,7 @@ public class Game
 	{
 		for(Unit unit : units)
 		{
-			if(unit.getRow() == row && unit.getCol() == col)
+			if(unit.getRow(unit) == row && unit.getCol(unit) == col)
 				return false;
 		}
 		
@@ -252,7 +263,7 @@ public class Game
 	{
 		for(Unit unit : units)
 		{
-			if(unit.getRow() == row && unit.getCol() == col)
+			if(unit.getRow(unit) == row && unit.getCol(unit) == col)
 				return unit;
 		}
 		
@@ -351,72 +362,6 @@ public class Game
 		}
 		bluePlanet = new Planet(this, UnitTeam.Blue, blueRow, blueCol);
 		units.add(bluePlanet);
-	}
-	
-	public void displayOrbs()
-	{
-		System.out.println("--- Orb Layout ---");
-		for(int r = 0; r < mapSize; r++)
-		{
-			for(int c = 0; c < mapSize; c++)
-			{
-				System.out.print(orbMap[r][c] + " ");
-			}
-			System.out.println();
-		}
-		System.out.println();
-	}
-	
-	public void displayUnits()
-	{
-		System.out.println("--- Round " + roundCounter + " ---");
-		System.out.println("Red Orbs: " + redPlanet.getOrbCount());
-		System.out.println("Blue Orbs: " + bluePlanet.getOrbCount());
-		for(int r = 0; r < mapSize; r++)
-		{
-			for(int c = 0; c < mapSize; c++)
-			{
-				if(!isPassable(r, c))
-				{
-					System.out.print("X");
-					continue;
-				}
-				
-				Unit unit = getUnitAt(r, c);
-				
-				if(unit == null)
-				{
-					System.out.print(".");
-				}
-				else
-				{
-					if(unit.getUnitTeam() == UnitTeam.Red)
-					{
-						if(unit.getUnitType() == UnitType.Planet)
-						{
-							System.out.print("R");
-						}
-						else
-						{
-							System.out.print("r");
-						}
-					}
-					else
-					{
-						if(unit.getUnitType() == UnitType.Planet)
-						{
-							System.out.print("B");
-						}
-						else
-						{
-							System.out.print("b");
-						}
-					}
-				}
-			}
-			System.out.println();
-		}
-		System.out.println();
 	}
 	
 	private int roundCounter;
