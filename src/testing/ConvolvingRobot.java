@@ -43,8 +43,8 @@ public class ConvolvingRobot extends AbstractRobot
 					}
 					else if(value == maxValue) // if its the same hotness, choose closest to unit
 					{
-						int distance = Game.manhattanDistance(r, c, unit.getRow(), unit.getCol());
-						int otherDistance = Game.manhattanDistance(maxRow, maxCol, unit.getRow(), unit.getCol());
+						int distance = Game.manhattanDistance(r, c, unit.getRow(unit), unit.getCol(unit));
+						int otherDistance = Game.manhattanDistance(maxRow, maxCol, unit.getRow(unit), unit.getCol(unit));
 						if(distance < otherDistance)
 						{
 							maxRow = r;
@@ -56,8 +56,8 @@ public class ConvolvingRobot extends AbstractRobot
 			}
 			
 			// Go to maxRow, maxCol
-			int deltaRow = maxRow - unit.getRow();
-			int deltaCol = maxCol - unit.getCol();
+			int deltaRow = maxRow - unit.getRow(unit);
+			int deltaCol = maxCol - unit.getCol(unit);
 			
 			// Preferablly, use A* for pathfinding, but im gonna use Crap*
 			// notice its not if-else below, its a bunch of ifs, incase one fails, others can still be examined
