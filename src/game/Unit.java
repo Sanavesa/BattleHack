@@ -28,17 +28,7 @@ public abstract class Unit
 		
 		for(Unit unit : game.getUnits())
 		{
-			if(unit.equals(this))
-				continue;
-			
-			int r1 = getRow(this);
-			int c1 = getCol(this);
-			int r2 = unit.getRow(this);
-			int c2 = unit.getCol(this);
-			if(r1 == -1 || c1 == -1 || r2 == -1 || c2 == -1)
-				continue;
-			
-			if(Game.manhattanDistanceSqrd(r1, c1, r2, c2) <= 4)
+			if(Game.manhattanDistanceSqrd(getRow(), getCol(), unit.getRow(), unit.getCol()) <= 4)
 			{
 				nearbyUnits.add(unit);
 			}
@@ -57,12 +47,9 @@ public abstract class Unit
 		return false;
 	}
 	
-	public int getRow(Unit asker)
+	public int getRow()
 	{
-		if(isVisible(asker))
-			return row;
-		else
-			return -1;
+		return row;
 	}
 
 	protected void setRow(int row)
@@ -70,12 +57,9 @@ public abstract class Unit
 		this.row = row;
 	}
 
-	public int getCol(Unit asker)
+	public int getCol()
 	{
-		if(isVisible(asker))
-			return col;
-		else
-			return -1;
+		return col;
 	}
 
 	protected void setCol(int col)
@@ -83,21 +67,14 @@ public abstract class Unit
 		this.col = col;
 	}
 
-	public UnitTeam getUnitTeam(Unit asker)
+	public UnitTeam getUnitTeam()
 	{
-		if(isVisible(asker))
-			return unitTeam;
-		else
-			return UnitTeam.None;
+		return unitTeam;
 	}
 
 	public void setSignal(int signal)
 	{
-		if(signal >= 0 && signal <= 65535)
-		{
-			this.signal = signal;
-			signalChanged = true;
-		}
+		this.signal = signal;
 	}
 	
 	public int getSignal()
@@ -120,7 +97,6 @@ public abstract class Unit
 		return game;
 	}
 
-	boolean signalChanged = false;
 	private int signal;
 	private int row;
 	private int col;
