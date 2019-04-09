@@ -35,8 +35,7 @@ public class Voyager extends Unit
 			if(unit.equals(this))
 				continue;
 			
-//			if(Game.manhattanDistanceSqrd(moveRow, moveCol, unit.getRow(), unit.getCol()) <= 4)
-			if(Math.abs(moveRow - unit.getRow()) > 1 || Math.abs(moveCol - unit.getCol()) > 1)
+			if(Game.manhattanDistanceSqrd(moveRow, moveCol, unit.getRow(), unit.getCol()) <= 4)
 			{
 				canMove = false;
 				break;
