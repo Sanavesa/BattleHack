@@ -74,18 +74,24 @@ public class Game
 		{
 			if(unit.getUnitTeam() == UnitTeam.Red)
 			{
-				Command command = redRobot.playTurn(this, unit);
-				if(command != null)
+				if(redRobot != null)
 				{
-					command.execute();
+					Command command = redRobot.playTurn(this, unit);
+					if(command != null)
+					{
+						command.execute();
+					}
 				}
 			}
 			else
 			{
-				Command command = blueRobot.playTurn(this, unit);
-				if(command != null)
+				if(blueRobot != null)
 				{
-					command.execute();
+					Command command = blueRobot.playTurn(this, unit);
+					if(command != null)
+					{
+						command.execute();
+					}
 				}
 			}
 		}
@@ -102,11 +108,17 @@ public class Game
 			{
 				if(unit.getUnitTeam() == UnitTeam.Red)
 				{
-					redRobot.playTurn(this, unit);
+					if(redRobot != null)
+					{
+						redRobot.playTurn(this, unit);
+					}
 				}
 				else
 				{
-					blueRobot.playTurn(this, unit);
+					if(blueRobot != null)
+					{
+						blueRobot.playTurn(this, unit);
+					}
 				}
 			}
 		}
