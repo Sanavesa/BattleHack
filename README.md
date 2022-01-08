@@ -1,1 +1,4 @@
 # BattleHack
+This repo contains the code that the ERAU team used to help understanding the BattleHack competition in IEEE SouthEastConf 2019. The actual code of the bot was developed in JavaScript and is private (conference rules). For more details about the competition, click ![here](https://site.ieee.org/southeastcon2019/software-competition/). BattleHack was a competition where each team develops a bot that competes against other bots. The game was 1-vs-1 where each bot can place a flag. The score for each bot was the area of the field where its flag is closer than the opponent's flag. Basically, each bot wanted to maximize the area covered by its placement of the flags. However, placing a flag will cost you a set amount of score; that way you cannot just place a flag at every possible point. So there was a trade-off to be made.
+
+Our team placed 2nd place out of 20 teams.
